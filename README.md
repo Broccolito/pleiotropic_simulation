@@ -88,18 +88,30 @@ simulate_error = function(genotype_effect, heritability){
 
 
 
-$$ \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{15}$$
+#### Specification
+
+In the current run, we simulated 1000 subjects and generated two phenotypes, each effected by 60 genotypes, where 40 of them are unique, and 20 of them are pleiotropic. All genotypes' effect sizes are either 0 (not relevant), or 1 (relevant). The allele frequencies all of genotypes are in between 0.1 and 0.9 (randomly distributed). The inheritabilities (h2) of both phenotypes are 0.3.
+
+```R
+# Simulate Genotypes
+n_genotype = 100
+n = 1000
+eafs = runif(100, min = 0.1, max = 0.9)
+genotypes = simulate_genotypes(n_genotype = n_genotype, n = n, eafs = eafs)
+
+# Simulate Phenotype1
+effect_sizes = c(rep(1,60),rep(0,40))
+heritability = 0.3
+phenotype1 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, heritability = heritability, phenotype_name = "PHENOTYPE1")
+
+# Simulate Phenotype2
+effect_sizes = c(rep(0,40),rep(1,60))
+heritability = 0.3
+phenotype2 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, heritability = heritability, phenotype_name = "PHENOTYPE2")
+```
 
 
 
-\begin{gather*}
-a_1=b_1+c_1\\
-a_2=b_2+c_2-d_2+e_2
-\end{gather*}
+### Reference
 
-\begin{align}
-a_{11}& =b_{11}&
-  a_{12}& =b_{12}\\
-a_{21}& =b_{21}&
-  a_{22}& =b_{22}+c_{22}
-\end{align}
+Climente-González, H. & Azencott, C.-A. martini: an R package for genome-wide association studies using SNP networks. *bioRxiv* 2021.01.25.428047 (2021) doi:10.1101/2021.01.25.428047
