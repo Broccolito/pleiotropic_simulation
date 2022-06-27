@@ -21,9 +21,17 @@ genotypes = simulate_genotypes(n_genotype = n_genotype, n = n, eafs = eafs)
 # Simulate Phenotype1
 effect_sizes = c(rep(1,60),rep(0,40))
 heritability = 0.3
-phenotype1 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, heritability = heritability, phenotype_name = "PHENOTYPE1")
+environment_effect = rep(1,100)
+phenotype1 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, 
+                                heritability = heritability, 
+                                environment_effect = environment_effect,
+                                phenotype_name = "PHENOTYPE1")
 
 # Simulate Phenotype2
 effect_sizes = c(rep(0,40),rep(1,60))
 heritability = 0.3
-phenotype2 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, heritability = heritability, phenotype_name = "PHENOTYPE2")
+environment_effect = rep(1,100)
+phenotype2 = simulate_phenotype(genotypes, effect_sizes = effect_sizes, 
+                                heritability = heritability, 
+                                environment_effect = environment_effect, 
+                                phenotype_name = "PHENOTYPE2")

@@ -93,6 +93,7 @@ simulate_phenotype = function(genotypes, effect_sizes, heritability, environment
                                                    genotype_effect = genotype_effect, 
                                                    heritability = heritability)
   error = simulate_error(genotype_effect = genotype_effect, 
+                         environment_effect = environment_effect,
                          heritability = heritability)
   
   if(heritability == 0){
