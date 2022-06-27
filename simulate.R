@@ -57,22 +57,49 @@ simulate_genotype_effect = function(genotypes, effect_sizes){
   return(genotype_effect)
 }
 
-simulate_error = function(genotype_effect, heritability){
-  residual_var = var(genotype_effect) * (1/heritability - 1)
-  residual = rnorm(length(genotype_effect), sd = sqrt(residual_var))
+simulate_environment_effect = function(environment_effect, genotype_effect, heritability){
+  if(
+    var(environment_effect) <= var(genotype_effect) * (1/heritability - 1)
+  ){
+    return(environment_effect)
+  }else{
+    environment_effect = ifelse(!is.na(environment_effect),0,0)
+    cat("Environment effect incompatible with the heritability specified...\n")
+    cat("Please decrease the variance of the environmental effect...\n")
+    return(environment_effect)
+  }
+}
+
+simulate_error = function(genotype_effect, environment_effect, heritability){
+  
+  if(heritability == 0){
+    residual = rnorm(length(genotype_effect), sd = sqrt(var(environment_effect)))
+  }else{
+    residual_var = var(genotype_effect) * (1/heritability - 1) - var(environment_effect)
+    residual = rnorm(length(genotype_effect), sd = sqrt(residual_var))
+  }
   
   return(residual)
 }
 
 
-simulate_phenotype = function(genotypes, effect_sizes, heritability, phenotype_name = "PHENOTYPE1"){
+simulate_phenotype = function(genotypes, effect_sizes, heritability, environment_effect, phenotype_name = "PHENOTYPE1"){
   if(any(heritability<0, heritability>1)){
     return("Please re-specify heritability")
   }
   
   genotype_effect = simulate_genotype_effect(genotypes = genotypes, effect_sizes = effect_sizes)
-  error = simulate_error(genotype_effect = genotype_effect, heritability = heritability)
-  phenotype = genotype_effect + error
+  environment_effect = simulate_environment_effect(environment_effect = environment_effect,
+                                                   genotype_effect = genotype_effect, 
+                                                   heritability = heritability)
+  error = simulate_error(genotype_effect = genotype_effect, 
+                         heritability = heritability)
+  
+  if(heritability == 0){
+    phenotype = environment_effect + error
+  }else{
+    phenotype = genotype_effect + environment_effect + error
+  }
   
   subject_name = names(phenotype)
   names(phenotype) = NULL
