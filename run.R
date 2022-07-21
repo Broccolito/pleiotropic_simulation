@@ -35,3 +35,7 @@ phenotype2 = simulate_phenotype(genotypes, effect_sizes = effect_sizes,
                                 heritability = heritability, 
                                 environment_effect = environment_effect, 
                                 phenotype_name = "PHENOTYPE2")
+
+
+
+
